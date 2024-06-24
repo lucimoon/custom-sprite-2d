@@ -11,10 +11,6 @@ class_name SpriteLayer2D extends Sprite2D
     color = value
     _set_color(value)
 
-## At least one variant is needed per layer.
-## The first variant will be the default option
-@export var variants: Array[Texture2D] = []
-
 ## Index of variant to display.
 ## Cannot be greater than maximum index of variants.
 @export var selected_variant: int = 0:
@@ -28,11 +24,26 @@ class_name SpriteLayer2D extends Sprite2D
 
     if max_index >= 0: _set_texture()
 
+## At least one variant is needed per layer.
+## The first variant will be the default option
+var variants: Array[Node] = []
+
+
+func _ready():
+  child_entered_tree.connect(func (_node): _get_variants())
+  _get_variants()
+
+## Caches a reference to a VariantTexture2D children
+func _get_variants():
+  variants = find_children("*", "VariantTexture2D")
+
+
 ## Changes color of selected variant
 func _set_color(value: Color):
   modulate = value
   self_modulate = value
 
+
 # Displays selected variant
 func _set_texture():
-  texture = variants[selected_variant]
+  texture = variants[selected_variant].texture
