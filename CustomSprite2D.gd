@@ -45,7 +45,7 @@ var layers: Array[Node] = []
 
 
 func get_layers():
-    layers = find_children("*", "CustomSpriteLayer2D")
+    layers = find_children("*", "SpriteLayer2D")
 
 ## Convenience method to find children in editor only
 func get_layers_in_editor():

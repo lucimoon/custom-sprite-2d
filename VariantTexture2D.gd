@@ -1,4 +1,4 @@
-extends Sprite2D
+class_name VariantTexture2D extends Texture
 
 ## One version of a customizable sprite layer
 ## E.g. Short sleve v long sleeve shirt

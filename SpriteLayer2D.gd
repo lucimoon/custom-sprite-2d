@@ -1,5 +1,5 @@
 @tool
-class_name CustomSpriteLayer2D extends Sprite2D
+class_name SpriteLayer2D extends Sprite2D
 ## A child of CustomSprite2D
 ## Defines a sprite layer whose animations
 ## are synced with sibling layers
@@ -13,7 +13,7 @@ class_name CustomSpriteLayer2D extends Sprite2D
 
 ## At least one variant is needed per layer.
 ## The first variant will be the default option
-@export var variants: Array[Texture] = []
+@export var variants: Array[Texture2D] = []
 
 ## Index of variant to display.
 ## Cannot be greater than maximum index of variants.
