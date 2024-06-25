@@ -13,6 +13,13 @@ class_name SpriteLayer2D extends Sprite2D
     color = value
     _set_color(value)
 
+
+## A curated list of colors associated with this layer.[br]
+## Colors are unused, within the layer, but are
+## associated with this layer and helpful for assisting a
+## player with choosing a color within the game's palette.
+@export var preset_colors: Array[Color] = []
+
 ## Index of variant to display.
 ## Cannot be greater than maximum index of variants.
 @export var selected_variant: int = 0:
@@ -43,7 +50,6 @@ func _get_variants():
 ## Changes color of selected variant
 func _set_color(value: Color):
   modulate = value
-  self_modulate = value
 
 
 # Displays selected variant
