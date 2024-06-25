@@ -18,6 +18,12 @@ The node hierarchy is as follows:
 
 You'll still need to create unique animations for your character, since the number of frames, speed, and other properties will be unique to your animations. This just keeps everything in sync!
 
+**Methods**
+
+`play_animation(name: String) -> null`
+
+Plays an animation on the sprite, coordinating animation frames across all layers.
+
 ### SpriteLayer2D
 
 `SpriteLayer2D` represents a customizable sprite layer. You might want a layer for a body, tops, bottoms, hair or even accessories! It's up to you how to break your character into layers. This layer controls which `VariantTexture2D` is displayed & what color is modulates the layer texture.
@@ -29,3 +35,9 @@ You'll still need to create unique animations for your character, since the numb
 ## Textures
 
 To get the most flexibility out of your textures, they should be created in gray scale. Modulating a color on pure white will display the true color. Pure black will remain black, unchanged. Experiment with different tones to find the values give you the flexibility you want.
+
+## Animations
+
+should be a public method on CustomCharacter2D
+
+This should allow other things to tell it what animation to play. It should manage it’s own animations.

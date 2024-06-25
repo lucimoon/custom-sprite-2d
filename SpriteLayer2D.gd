@@ -4,6 +4,8 @@ class_name SpriteLayer2D extends Sprite2D
 ## Defines a sprite layer whose animations
 ## are synced with sibling layers
 
+@export var title: String = "Layer"
+
 ## Color modulates sprite texture to support
 ## color variations for the same sprite
 @export var color: Color = Color(1, 1, 1, 1):
