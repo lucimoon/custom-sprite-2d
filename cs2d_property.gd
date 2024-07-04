@@ -6,16 +6,10 @@ extends Node2D
 signal color_changed(color: Color)
 signal texture_changed(value: int)
 
+
 @export var ui_name: String = ""
-
-
-var color: Color = Color.WHITE:
-  set(value):
-    color = value
-    color_changed.emit(color)
-
 @export var color_presets: ColorPalette = null
-
+@export var texture_previews: Array[Texture2D] = []
 
 ## The selected texture from the list
 ## Selects the greatest index when set too high
@@ -34,4 +28,12 @@ var color: Color = Color.WHITE:
     texture_changed.emit(texture_index)
 
 
-@export var texture_previews: Array[Texture2D] = []
+var color: Color = Color.WHITE:
+  set(value):
+    color = value
+    color_changed.emit(color)
+
+
+func randomize():
+  color = color_presets.colors.pick_random()
+  texture_index = randi_range(0, texture_previews.size() - 1)

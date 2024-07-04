@@ -59,8 +59,6 @@ func _ready():
   _get_properties()
   _get_layers()
 
-  # if layer_config.size():
-  #   set_layers(layer_config)
 
 
 ## Caches a reference to all CSSpriteProperty children
