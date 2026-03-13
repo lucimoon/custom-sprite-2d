@@ -44,7 +44,7 @@ signal layers_ready()
 
 
 @export var layer_config: Array[CSLayerConfig] = []
-@export var animation_player: AnimationPlayer = null
+@export_node_path("AnimationPlayer") var animation_player_path: NodePath = NodePath("")
 
 
 ## Properties
@@ -69,7 +69,7 @@ func _get_properties():
 ## Caches a reference to all CSLayer children
 func _get_layers():
   layers = find_children("*", "CSLayer")
-  layers_ready.emit()
+  layers_ready.emit.call_deferred()
 
 
 ## Maps config to all sprite layers.[br]
@@ -88,4 +88,7 @@ func set_layer(layer: CSLayer, config: CSLayerConfig):
 
 
 func play_animation(animation: String):
-  animation_player.play(animation)
+  if animation_player_path.is_empty(): return
+  var player := get_node(animation_player_path) as AnimationPlayer
+  if player:
+    player.play(animation)

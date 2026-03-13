@@ -4,16 +4,11 @@ extends Sprite2D
 ## Displays a texture depending on values of constraints
 
 
+## Label that identifies this layer (used to match CSLayerConfig.name)
+@export var title: String = ""
+
 ## Constrains texture index to value of the CSSpriteProperty
 @export var texture_constraint: CSSpriteProperty = null
-
-## Constrains position.x of the texture index
-## to value of the CSSpriteProperty.
-@export var offset_x_constraint: CSSpriteProperty = null
-
-## Constrains position.x of the texture index
-## to value of the CSSpriteProperty.
-@export var offset_y_constraint: CSSpriteProperty = null
 
 ## Constrains modulate value of the texture
 ## to value of the CSSpriteProperty
@@ -22,6 +17,21 @@ extends Sprite2D
 ## Constrains visibility of the texture
 ## to value of the CSSpriteProperty
 @export var visibility_constraint: CSSpriteProperty = null
+
+
+## Sets texture_constraint.texture_index; drives the constraint signal chain
+var selected_variant: int = 0:
+  set(value):
+    selected_variant = value
+    if texture_constraint != null:
+      texture_constraint.texture_index = value
+
+## Sets color_constraint.color; drives the constraint signal chain
+var color: Color = Color.WHITE:
+  set(value):
+    color = value
+    if color_constraint != null:
+      color_constraint.color = value
 
 
 @export var textures: Array[Texture2D] = []

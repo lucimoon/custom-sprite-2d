@@ -8,7 +8,7 @@ signal texture_changed(value: int)
 
 
 @export var ui_name: String = ""
-@export var color_presets: ColorPalette = null
+@export var color_presets: CS2DColorPalette = null
 @export var texture_previews: Array[Texture2D] = []
 
 ## The selected texture from the list
@@ -35,5 +35,7 @@ var color: Color = Color.WHITE:
 
 
 func randomize():
-  color = color_presets.colors.pick_random()
-  texture_index = randi_range(0, texture_previews.size() - 1)
+  if color_presets and color_presets.colors.size() > 0:
+    color = color_presets.colors[randi() % color_presets.colors.size()]
+  if texture_previews.size() > 0:
+    texture_index = randi_range(0, texture_previews.size() - 1)
