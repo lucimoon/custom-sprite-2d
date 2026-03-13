@@ -2,7 +2,7 @@
 
 A Godot 4 addon for building layered, customizable 2D characters with texture swapping, color modulation, and AnimationPlayer sync.
 
-> 📸 Screenshot: Full character creator running — character preview on the right, property menu on the left, color/texture options panel open
+![Screenshot of asset demo](images/demo-screenshot.png)
 
 ---
 
@@ -39,7 +39,7 @@ CSSprite                    ← root node
   └── AnimationPlayer
 ```
 
-> 📸 Screenshot: Scene tree in the Godot editor showing this hierarchy
+![Scene tree in the Godot editor showing hierarchy](images/hierarchy%20view.png)
 
 ---
 
@@ -60,9 +60,9 @@ In the inspector for each `CSLayer` node:
 - Add textures to the `textures` array — one texture per variant
 - Set `texture_constraint` → drag in the `CSSpriteProperty` that controls which variant is shown
 - Set `color_constraint` → drag in the `CSSpriteProperty` that controls the color tint
-- Optionally set `visibility_constraint` + fill the `visibility` array (one `bool` per variant index) to show/hide this layer based on another property's selected variant
+- Optionally set `visibility_constraint` + fill the `visibility` array (one `bool` per variant index) to show/hide this layer based on another property's selected variant. This is a fallback in case you have multiple textures for a single area. Like adding a texture for shorts when everything was pants.
 
-> 📸 Screenshot: CSLayer inspector with the `textures` array filled and `texture_constraint` / `color_constraint` wired to CSSpriteProperty nodes
+![CSLayer inspector with the `textures` array filled and `texture_constraint` / `color_constraint` wired to CSSpriteProperty nodes](images/texture_inspector.png)
 
 ---
 
@@ -102,11 +102,12 @@ Layers use **grayscale source textures** for color modulation:
 
 - Pure **white** pixels take the full tint color
 - Pure **black** pixels stay black regardless of tint
-- Mid-grey pixels blend proportionally
+- Mid-grey pixels blend proportionally (Use this for outlines relevant to the fill color)
 
 This lets a single texture work for any color variant without needing separate artwork per color.
 
-> 📸 Screenshot: Side-by-side of a grayscale source texture and the same layer tinted red, blue, and green
+![grayscale source texture](images/greyscale.png)
+![color applied to source texture ](images/color.png)
 
 ---
 
@@ -116,20 +117,22 @@ This lets a single texture work for any color variant without needing separate a
 
 The root node. Owns the layer configuration and drives the AnimationPlayer.
 
-| Property | Type | Description |
-|---|---|---|
-| `animation_player_path` | NodePath | Path to AnimationPlayer (relative to this node) |
-| `h_frames` | int | Horizontal spritesheet frames — synced to all layers |
-| `v_frames` | int | Vertical spritesheet frames — synced to all layers |
-| `frame` | int | Current frame — synced to all layers |
-| `layer_config` | Array[CSLayerConfig] | Saved configuration snapshot |
+| Property                | Type                 | Description                                          |
+| ----------------------- | -------------------- | ---------------------------------------------------- |
+| `animation_player_path` | NodePath             | Path to AnimationPlayer (relative to this node)      |
+| `h_frames`              | int                  | Horizontal spritesheet frames — synced to all layers |
+| `v_frames`              | int                  | Vertical spritesheet frames — synced to all layers   |
+| `frame`                 | int                  | Current frame — synced to all layers                 |
+| `layer_config`          | Array[CSLayerConfig] | Saved configuration snapshot                         |
 
 **Methods:**
+
 - `play_animation(name: String)` — plays a named animation on the linked AnimationPlayer
 - `set_layers(config: Array[CSLayerConfig])` — restores a saved configuration
 - `set_layer(layer, config)` — updates a single layer
 
 **Signals:**
+
 - `layers_ready()` — emitted after all `CSLayer` children are initialized; wait for this before reading or writing layer state at runtime
 
 ---
@@ -138,18 +141,20 @@ The root node. Owns the layer configuration and drives the AnimationPlayer.
 
 Holds the current texture variant index and color for one customizable aspect of the character (e.g. hair style, skin tone).
 
-| Property | Type | Description |
-|---|---|---|
-| `ui_name` | String | Human-readable name (useful for UI labels) |
-| `texture_index` | int | Currently selected variant (auto-clamps to valid range) |
-| `color` | Color | Currently selected color |
-| `texture_previews` | Array[Texture2D] | Optional thumbnails for picker UIs |
-| `color_presets` | CS2DColorPalette | Optional preset color swatches |
+| Property           | Type             | Description                                             |
+| ------------------ | ---------------- | ------------------------------------------------------- |
+| `ui_name`          | String           | Human-readable name (useful for UI labels)              |
+| `texture_index`    | int              | Currently selected variant (auto-clamps to valid range) |
+| `color`            | Color            | Currently selected color                                |
+| `texture_previews` | Array[Texture2D] | Optional thumbnails for picker UIs                      |
+| `color_presets`    | CS2DColorPalette | Optional preset color swatches                          |
 
 **Methods:**
+
 - `randomize()` — picks a random variant index and color from presets
 
 **Signals:**
+
 - `texture_changed(value: int)` — fires when `texture_index` changes
 - `color_changed(color: Color)` — fires when `color` changes
 
@@ -159,14 +164,14 @@ Holds the current texture variant index and color for one customizable aspect of
 
 A single sprite layer. Reads its variant and tint from the `CSSpriteProperty` nodes wired into its constraints.
 
-| Property | Type | Description |
-|---|---|---|
-| `title` | String | Identifier — matches `CSLayerConfig.name` |
-| `textures` | Array[Texture2D] | Texture variants (one per index) |
-| `texture_constraint` | CSSpriteProperty | Controls which variant is displayed |
-| `color_constraint` | CSSpriteProperty | Controls the color tint |
-| `visibility_constraint` | CSSpriteProperty | Gates visibility based on another property |
-| `visibility` | Array[bool] | One entry per `visibility_constraint` index — `true` = visible |
+| Property                | Type             | Description                                                    |
+| ----------------------- | ---------------- | -------------------------------------------------------------- |
+| `title`                 | String           | Identifier — matches `CSLayerConfig.name`                      |
+| `textures`              | Array[Texture2D] | Texture variants (one per index)                               |
+| `texture_constraint`    | CSSpriteProperty | Controls which variant is displayed                            |
+| `color_constraint`      | CSSpriteProperty | Controls the color tint                                        |
+| `visibility_constraint` | CSSpriteProperty | Gates visibility based on another property                     |
+| `visibility`            | Array[bool]      | One entry per `visibility_constraint` index — `true` = visible |
 
 ---
 
