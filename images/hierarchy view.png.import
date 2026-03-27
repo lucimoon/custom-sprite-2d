@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://lbsa50eclumv"
-path="res://.godot/imported/hierarchy view.png-51140f505745d771343285183f8a890e.ctex"
+path="res://.godot/imported/hierarchy view.png-cc118467b1175945291f5c2fc2f34101.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/custom-character-2d/images/hierarchy view.png"
-dest_files=["res://.godot/imported/hierarchy view.png-51140f505745d771343285183f8a890e.ctex"]
+source_file="res://addons/custom-sprite-2d/images/hierarchy view.png"
+dest_files=["res://.godot/imported/hierarchy view.png-cc118467b1175945291f5c2fc2f34101.ctex"]
 
 [params]
 
