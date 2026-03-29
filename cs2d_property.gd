@@ -16,14 +16,14 @@ signal texture_changed(value: int)
 ## Selects the lowest index (0) when set too low
 @export var texture_index: int = 0:
   set(_value):
-    texture_index= _value
+    texture_index = _value
     var preview_count: int = texture_previews.size()
 
     if _value >= preview_count:
-      texture_index= preview_count - 1
+      texture_index = preview_count - 1
 
     if _value < 0:
-      texture_index= 0
+      texture_index = 0
 
     texture_changed.emit(texture_index)
 

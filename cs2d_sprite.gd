@@ -38,7 +38,7 @@ signal layers_ready()
 @export var frame_coords: Vector2i:
   set(value):
     for layer in layers:
-      layer.frame_coords= value
+      layer.frame_coords = value
 
     frame_coords = value
 
@@ -60,9 +60,10 @@ func _ready():
   _get_layers()
 
 
-
 ## Caches a reference to all CSSpriteProperty children
 func _get_properties():
+  if properties.size() > 0: return properties
+
   properties = find_children("*", "CSSpriteProperty")
 
 
@@ -92,3 +93,20 @@ func play_animation(animation: String):
   var player := get_node(animation_player_path) as AnimationPlayer
   if player:
     player.play(animation)
+
+
+## Sets property values by name
+func set_property_by_name(name: String, color: Color, textureIndex: int):
+  _get_properties()
+
+  var propertyIndex := properties.find_custom(func(prop):
+    if prop is not CSSpriteProperty: return false
+
+    return prop.ui_name == name
+  )
+
+  var property = properties[propertyIndex]
+
+  if property is CSSpriteProperty:
+    property.color = color
+    property.texture_index = textureIndex
