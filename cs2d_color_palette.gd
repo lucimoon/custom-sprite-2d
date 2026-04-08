@@ -9,3 +9,9 @@ class_name CS2DColorPalette extends Resource
         colors.append(Color(hex.strip_edges()))
 
 @export var colors: Array[Color] = []
+
+func is_empty():
+  return colors.is_empty()
+
+func size():
+  return colors.size()
