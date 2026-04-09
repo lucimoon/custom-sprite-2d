@@ -73,11 +73,12 @@ func _get_layers():
   layers_ready.emit.call_deferred()
 
 
-## Maps config to all sprite layers.[br]
-## Values missing from config will return to defaults.
-func set_layers(config: Array[CSLayerConfig]):
-  for i in layers.size():
-    set_layer(layers[i], config[i])
+## Maps configs to layers by name.[br]
+## Each config is applied to any layer whose title matches config.name.
+func set_layers(configs: Array[CSLayerConfig]) -> void:
+  for config in configs:
+    for layer in layers:
+      set_layer(layer, config)
 
 
 ## Maps config to specified sprite layer.[br]
@@ -93,6 +94,18 @@ func play_animation(animation: String):
   var player := get_node(animation_player_path) as AnimationPlayer
   if player:
     player.play(animation)
+
+
+## Maps configs to properties by name.[br]
+## Each config is applied to any CSSpriteProperty whose ui_name matches config.name.
+func set_properties(configs: Array[CSLayerConfig]) -> void:
+  _get_properties()
+  for config in configs:
+    for property in properties:
+      if property is CSSpriteProperty and property.ui_name == config.name:
+        property.color = config.color
+        property.texture_index = config.variant_index
+        break
 
 
 ## Sets property values by name
