@@ -86,13 +86,28 @@ custom_sprite.play_animation("walk")
 - `texture_changed(value: int)` — fires when the selected variant changes
 - `color_changed(color: Color)` — fires when the color changes
 
-To change the character from code, set properties directly:
+**Option A — set properties directly:**
 
 ```gdscript
 body_property.texture_index = 2
 hair_property.color = Color.RED
 hair_property.randomize()   # picks a random variant + color from presets
 ```
+
+**Option B — apply a batch of `CSLayerConfig` objects** (recommended for serializable character data):
+
+```gdscript
+# Build configs once (e.g. from a saved CharacterAppearance resource)
+var configs: Array[CSLayerConfig] = [
+  _make("Body", skin_color, body_type),
+  _make("Hair", hair_color, hair_type),
+]
+
+# Apply — drives the full constraint chain via property ui_name lookup
+custom_sprite.set_properties(configs)
+```
+
+Both approaches drive the same constraint signal chain — all dependent `CSLayer` nodes update automatically.
 
 ---
 
@@ -128,8 +143,9 @@ The root node. Owns the layer configuration and drives the AnimationPlayer.
 **Methods:**
 
 - `play_animation(name: String)` — plays a named animation on the linked AnimationPlayer
-- `set_layers(config: Array[CSLayerConfig])` — restores a saved configuration
-- `set_layer(layer, config)` — updates a single layer
+- `set_properties(configs: Array[CSLayerConfig])` — applies configs to `CSSpriteProperty` nodes by matching `config.name` to `ui_name`; use this when your configs represent properties (e.g. "Body", "Hair")
+- `set_layers(configs: Array[CSLayerConfig])` — applies configs to `CSLayer` nodes by matching `config.name` to `title`; use this when your configs represent individual layers
+- `set_layer(layer: CSLayer, config: CSLayerConfig)` — applies a single config to one layer if `layer.title == config.name`
 
 **Signals:**
 
@@ -177,7 +193,16 @@ A single sprite layer. Reads its variant and tint from the `CSSpriteProperty` no
 
 ### CSLayerConfig (Resource)
 
-A serializable snapshot of one layer's state. Fields: `name`, `variant_index`, `color`. Use with `CSSprite.set_layers()` to restore a saved character look.
+A serializable snapshot of one customizable aspect. Fields: `name` (String), `variant_index` (int), `color` (Color).
+
+There are two ways to apply an `Array[CSLayerConfig]`, depending on what your `name` values represent:
+
+| Method | `name` matches | Use when |
+|--------|---------------|----------|
+| `set_properties(configs)` | `CSSpriteProperty.ui_name` | One config per property (e.g. "Body", "Hair") — drives the full constraint chain |
+| `set_layers(configs)` | `CSLayer.title` | One config per layer — useful for fine-grained per-layer overrides |
+
+For most character data models, `set_properties` is the right choice: one config per property propagates to all dependent layers automatically via the constraint chain.
 
 ---
 
