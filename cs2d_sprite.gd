@@ -42,6 +42,12 @@ signal layers_ready()
 
     frame_coords = value
 
+## Flips all child layers along x-axis
+@export var flip_h: bool:
+  set(value):
+    flip_h = value
+    set_layers_flip_h(value)
+
 
 @export var layer_config: Array[CSLayerConfig] = []
 @export_node_path("AnimationPlayer") var animation_player_path: NodePath = NodePath("")
@@ -87,6 +93,11 @@ func set_layer(layer: CSLayer, config: CSLayerConfig):
   if layer.title == config.name:
     layer.selected_variant = config.variant_index
     layer.color = config.color
+
+## Flips all child layers along x-axis
+func set_layers_flip_h(value):
+  for layer in layers:
+    layer.flip_h = value
 
 
 func play_animation(animation: String):
